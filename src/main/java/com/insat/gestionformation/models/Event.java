@@ -1,6 +1,8 @@
 package com.insat.gestionformation.models;
 
 import javax.persistence.*;
+import java.sql.Time;
+import java.util.Date;
 
 @Entity
 @Table(name = "EVENT")
@@ -14,6 +16,25 @@ public class Event {
     private String name;
     private String description;
     private int capacity;
+    private Date date;
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    private Time time;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public long getId() {
         return id;

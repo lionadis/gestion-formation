@@ -44,4 +44,5 @@ public class EventController {
         eventService.deleteEvent(id);
         return "redirect:/event/all";
     }
+
 }
