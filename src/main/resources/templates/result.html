@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot and Thymeleaf example</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<!--/* Workaround for bug https://youtrack.jetbrains.com/issue/IDEA-132738 -->
+<!--@thymesVar id="event" type="com.insat.gestionformation.models.Event"-->
+<!--@thymesVar id="name" type="String"-->
+<!--@thymesVar id="capacity" type="int"-->
+<!--@thymesVar id="description" type="String"-->
+<!--*/-->
+<h4>Event Name:</h4>
+<p th:text="${name}"/>
+<h4>Capacity:</h4>
+<p th:text="${capacity}"/>
+<a href="/">Return to the home</a>
+</body>
+</html>

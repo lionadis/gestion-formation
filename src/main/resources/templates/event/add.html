@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<!--@thymesVar id="event" type="com.insat.gestionformation.models.Event"-->
+<!--@thymesVar id="name" type="String"-->
+<!--@thymesVar id="capcity" type="int"-->
+<!--@thymesVar id="description" type="String"-->
+<!--*/-->
+<body>
+    <h3>Ajouter une formation:</h3>
+    <form action="#" th:action="@{/event/add}" th:object="${event}" method="post">
+        <table>
+            <tr>
+                <td>Event Name:</td>
+                <td><input type="text" th:field="*{name}"></input></td>
+            </tr>
+            <tr>
+                <td>Capacity:</td>
+                <td><input type="number" th:field="*{capacity}"></input></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><input type="text" th:field="*{description}"></input></td>
+            </tr>
+            <tr>
+                <button type="submit">Submit</button></tr>
+        </table>
+    </form>
+</body>
+</html>
