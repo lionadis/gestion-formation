@@ -17,7 +17,10 @@ public class Event {
     private String description;
     private int capacity;
     private Date date;
+    private Time time;
 
+
+    @Column(name = "TIME")
     public Time getTime() {
         return time;
     }
@@ -26,8 +29,7 @@ public class Event {
         this.time = time;
     }
 
-    private Time time;
-
+    @Column(name = "DATE")
     public Date getDate() {
         return date;
     }
