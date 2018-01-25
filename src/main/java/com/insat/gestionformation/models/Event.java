@@ -3,6 +3,8 @@ package com.insat.gestionformation.models;
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "EVENT")
@@ -19,6 +21,31 @@ public class Event {
     private Date date;
     private Time time;
 
+    @ManyToOne
+    @JoinColumn(name="host")
+    private User host;
+
+    public Set<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<User> participants) {
+        this.participants = participants;
+    }
+
+    @ManyToMany
+    @JoinTable(name="participation",
+        joinColumns={@JoinColumn(name="id_user")},
+        inverseJoinColumns={@JoinColumn(name="id_event")})
+    private Set<User> participants=new HashSet<User>();
+
+    public User getHost() {
+        return host;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
 
     @Column(name = "TIME")
     public Time getTime() {
