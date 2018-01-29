@@ -3,6 +3,10 @@
 <head lang="en">
     <title>Index</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 </head>
 
 <!--@thymesVar id="event" type="com.insat.gestionformation.models.Event"-->
@@ -11,6 +15,46 @@
 <!--@thymesVar id="description" type="String"-->
 <!--*/-->
 <body>
+<nav class="navbar navbar-default navbar-fixed">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gestion Formation</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Disconnected <span class="caret"></span></a>
+                    <div class="dropdown-menu">
+                        <form action="#" th:action="@{/signin}" th:object="${user}" method="post">
+                            <div class="form-group">
+                                <input type="email" id="email" placeholder="email" class="form-control" th:field="*{mail}"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="pwd" placeholder="password" class="form-control" th:field="*{passwd}"/>
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox"/> Remember me</label>
+                            </div>
+                            <button class="btn btn-default" type="submit">Sign in</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
 <h3>All Events:</h3>
 <table>
     <tr>
@@ -19,15 +63,25 @@
         <th>Description</th>
     </tr>
     <!--/*@thymesVar id="events" type="List<Event>"*/-->
-    <tr th:each="event : ${events}" >
-        <td th:text = "${event.name}"> </td>
-        <td th:text = "${event.capacity}"> </td>
-        <td th:text = "${event.description}"> </td>
+    <tr th:each="event : ${events}">
+        <td th:text="${event.name}"></td>
+        <td th:text="${event.capacity}"></td>
+        <td th:text="${event.description}"></td>
         <td><a href="#" th:href="@{delete/__${event.id}__}">delete</a></td>
     </tr>
 </table>
 <a href="/event/add"> Add a new event</a>
 <br/>
 <a href="/signup">Signup</a>
+<br/>
+<a href="/sginin">Sing in</a>
+
+<script
+        src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>
