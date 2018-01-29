@@ -1,6 +1,7 @@
 package com.insat.gestionformation.controllers;
 
 import com.insat.gestionformation.models.Event;
+import com.insat.gestionformation.models.User;
 import com.insat.gestionformation.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/event")
@@ -43,6 +45,28 @@ public class EventController {
     public String deleteEvent(@PathVariable Long id){
         eventService.deleteEvent(id);
         return "redirect:/event/all";
+    }
+
+    @GetMapping(value = "/details/{id}")
+    public String detailsEvent(@PathVariable Long id,Model model){
+        model.addAttribute("event", eventService.getEvent(id));
+        return "/event/details";
+    }
+
+    @PostMapping(value = "/details/{id}")
+    public String updateEvent(@PathVariable Long id,Model model){
+        Event event = eventService.getEvent(id);
+        eventService.deleteEvent(id);
+        Set<User> users = event.getParticipants();
+        User user =new User();
+        user.setName("Nadhem");
+        user.setFamilyName("Maaloul");
+        users.add(user);
+        event.setParticipants(users);
+        eventService.addEvent(event);
+        model.addAttribute("event", event);
+        model.addAttribute("participants", users);
+        return "/event/details";
     }
 
 }

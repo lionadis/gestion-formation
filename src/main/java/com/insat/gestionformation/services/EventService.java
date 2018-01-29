@@ -29,6 +29,8 @@ public class EventService{
         return (Event) eventRepository.save(event);
     }
 
+    public Event updateEvent(Event event){ return (Event) eventRepository.save(event); }
+
     public void deleteEvent(long id){
         eventRepository.delete(id);
     }

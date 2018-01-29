@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+
+<!--@thymesVar id="event" type="com.insat.gestionformation.models.Event"-->
+<!--@thymesVar id="name" type="String"-->
+<!--@thymesVar id="capcity" type="int"-->
+<!--@thymesVar id="description" type="String"-->
+<!--*/-->
+<body>
+<h3>Details of the event: </h3>
+<h3 th:text = "${event.name}"></h3>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Capacity</th>
+        <th>Description</th>
+    </tr>
+    <!--/*@thymesVar id="events" type="List<Event>"*/-->
+    <tr>
+        <a href="#"><td th:text = "${event.name}"></td></a>
+        <td th:text = "${event.capacity}"> </td>
+        <td th:text = "${event.description}"> </td>
+        <td><a href="/event/all" th:href="@{../delete/__${event.id}__}">delete</a></td>
+    </tr>
+</table>
+<h3>All paticipants:</h3>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Family Name</th>
+        <th>Mail</th>
+    </tr>
+    <!--/*@thymesVar id="events" type="List<Event>"*/-->
+    <tr th:each="user : ${event.getParticipants()}" >
+        <td th:text = "${user.name}"></td>
+        <td th:text = "${user.familyName}"> </td>
+        <td th:text = "${user.mail}"> </td>
+    </tr>
+</table>
+<a href="/event/all"> back</a>
+<form action="#" th:action="@{/event/details/__${event.id}__}" method="post">
+    <table>
+            <button type="submit">Register now!</button>
+    </table>
+</form>
+</body>
+</html>
