@@ -27,10 +27,6 @@ public class UserController {
         return "redirect:/event/all";
     }
 
-    @GetMapping(value = "/signin")
-    public String signIn(User user){
-        return "signin";
-    }
     @PostMapping(value = "/signin")
     public String connect(@Valid User user){
         //userService.addUser(user);
