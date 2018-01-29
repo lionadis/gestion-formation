@@ -37,7 +37,7 @@ public class Event {
     @JoinTable(name="participation",
         joinColumns={@JoinColumn(name="id_user")},
         inverseJoinColumns={@JoinColumn(name="id_event")})
-    private Set<User> participants=new HashSet<User>();
+    private Set<User> participants;
 
     public User getHost() {
         return host;

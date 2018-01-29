@@ -20,6 +20,15 @@ public class User {
     private String mail;
     private String passwd;
 
+    @ManyToMany
+    @JoinTable(name="participation",
+            joinColumns={@JoinColumn(name="id_event")},
+            inverseJoinColumns={@JoinColumn(name="id_user")})
+    private Set<Event> participated=new HashSet<Event>();
+
+    @OneToMany(mappedBy = "host")
+    private Set<Event> hosted;
+
     public Set<Event> getParticipated() {
         return participated;
     }
@@ -27,12 +36,6 @@ public class User {
     public void setParticipated(Set<Event> participated) {
         this.participated = participated;
     }
-
-    @ManyToMany
-    @JoinTable(name="participation",
-            joinColumns={@JoinColumn(name="id_event")},
-            inverseJoinColumns={@JoinColumn(name="id_user")})
-    private Set<Event> participated=new HashSet<Event>();
 
     public void setId(long id) {
         this.id = id;
