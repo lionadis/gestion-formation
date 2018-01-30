@@ -100,8 +100,8 @@
             <td th:text="${event.name}"></td>
             <td th:text="${event.capacity}"></td>
             <td th:text="${event.description}"></td>
-            <td th:text="${event.date}"></td>
-            <td th:text="${event.time}"></td>
+            <td th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:''"></td>
+            <td th:text="${event.time}?${#dates.format(event.time,'hh:mm aa')}:''"></td>
             <td><a class="btn btn-success"><div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a></td>
             <!--<td><a href="#" th:href="@{delete/__${event.id}__}">delete</a></td>-->
         </tr>
