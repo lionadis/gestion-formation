@@ -12,8 +12,13 @@
         .hidden-xs {
             display: inline-block;
         }
-        body{
+
+        body {
             background-size: cover;
+        }
+
+        a {
+            text-decoration: none;
         }
     </style>
 </head>
@@ -46,32 +51,44 @@
                        aria-expanded="false">
                         <div class="glyphicon glyphicon-user" style="display: inline-block"></div> &nbsp;
                         <div th:switch="${connected}" style="display: inline-block">
-                            <div th:case="${false}" >Sign in</div>
                             <div th:case="${true}">
                                 <div th:text="${name}"></div>
                             </div>
+                            <div th:case="*">Sign in</div>
                         </div>
-
-
-
                         <span class="caret"></span></a>
                     <div class="dropdown-menu" style="width: 300px; padding: 20px;">
-                        <form action="#" th:action="@{/signin}" th:object="${user}" method="post">
-                            <div class="form-group">
-                                <input type="email" id="email" placeholder="email" class="form-control"
-                                       th:field="*{mail}"/>
+                        <div th:switch="${connected}">
+                            <div th:case="${true}">
+                                <div>
+                                    <h5 th:text="${mail}"></h5>
+                                    <hr/>
+                                    <a href="/disconnect">
+                                        <div class="glyphicon glyphicon-log-out"></div>
+                                        Disconnect</a>
+
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="password" id="pwd" placeholder="password" class="form-control"
-                                       th:field="*{passwd}"/>
+                            <div th:case="*">
+                                <form action="#" th:action="@{/signin}" th:object="${user}" method="post">
+                                    <div class="form-group">
+                                        <input type="email" id="email" placeholder="email" class="form-control"
+                                               th:field="*{mail}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="pwd" placeholder="password" class="form-control"
+                                               th:field="*{passwd}"/>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox"/> Remember me</label>
+                                    </div>
+                                    <button class="btn btn-default" type="submit" href="/sginin">Sign in</button>
+                                </form>
+                                <hr/>
+                                <a href="/signup">Don't have an Account? Sign up!</a>
                             </div>
-                            <div class="checkbox">
-                                <label><input type="checkbox"/> Remember me</label>
-                            </div>
-                            <button class="btn btn-default" type="submit" href="/sginin">Sign in</button>
-                        </form>
-                        <hr/>
-                        <a href="/signup">Don't have an Account? Sign up!</a>
+
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -85,16 +102,21 @@
             <h2>All Events:</h2>
         </div>
         <div class="col-xs-4" align="right">
-            <a class="btn btn-default btn-success" style="margin-top: 15px;" href="/event/add">
-                <div class="glyphicon glyphicon-plus"></div>
-                <div class="hidden-xs">Add an event</div>
-            </a>
+            <div th:switch="${connected}">
+                <div th:case="${true}">
+                    <a class="btn btn-default btn-success" style="margin-top: 15px;" href="/event/add">
+                        <div class="glyphicon glyphicon-plus"></div>
+                        <div class="hidden-xs">Add an event</div>
+                    </a>
+
+                </div>
+            </div>
         </div>
     </div>
 
     <br/>
 
-    <table id="eventsTable" class="table table-bordered" style="background-color: aliceblue" >
+    <table id="eventsTable" class="table table-bordered" style="background-color: aliceblue">
         <thead>
         <tr>
             <th>Name</th>
@@ -113,7 +135,8 @@
             <td th:text="${event.description}"></td>
             <td th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:''"></td>
             <td th:text="${event.time}?${#dates.format(event.time,'hh:mm aa')}:''"></td>
-            <td><a class="btn btn-success"><div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a></td>
+            <td><a class="btn btn-success">
+                <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a></td>
             <!--<td><a href="#" th:href="@{delete/__${event.id}__}">delete</a></td>-->
         </tr>
         </tbody>
@@ -133,7 +156,7 @@
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#eventsTable').DataTable({"paginate":false,"info":false});
+        $('#eventsTable').DataTable({"paginate": false, "info": false});
     });
 </script>
 </body>

@@ -19,6 +19,7 @@ public class IndexController {
         model.addAttribute("mail", session.getAttribute("mail"));
         model.addAttribute("connected",session.getAttribute("connected"));
         model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("mail", session.getAttribute("mail"));
         model.addAttribute("events", eventService.getAllEvents());
         return "index";
     }

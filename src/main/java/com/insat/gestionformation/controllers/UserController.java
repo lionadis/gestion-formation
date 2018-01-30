@@ -35,7 +35,14 @@ public class UserController {
         if (res!=null && user.getPasswd().equals(res.getPasswd())){
             session.setAttribute("connected", true);
             session.setAttribute("name", res.getName()+" "+res.getFamilyName());
+            session.setAttribute("mail", res.getMail());
         }
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/disconnect")
+    public String signout(HttpSession session){
+        session.invalidate();
         return "redirect:/";
     }
 }
