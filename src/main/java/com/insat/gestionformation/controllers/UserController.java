@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -28,8 +29,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/signin")
-    public String connect(@Valid User user){
-        //userService.addUser(user);
-        return "redirect:/event/all";
+    public String connect(@Valid User user, HttpSession session){
+        User res=userService.getUserByMail(user.getMail());
+        System.out.println(user.getPasswd()+" "+res.getPasswd());
+        if (res!=null && user.getPasswd().equals(res.getPasswd())){
+            session.setAttribute("connected", true);
+            session.setAttribute("name", res.getName()+" "+res.getFamilyName());
+        }
+        return "redirect:/";
     }
 }

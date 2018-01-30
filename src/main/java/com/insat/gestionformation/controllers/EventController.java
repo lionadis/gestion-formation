@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Set;
 
@@ -30,7 +32,8 @@ public class EventController {
     }
 
     @GetMapping(value = "/all")
-    public String allEvent(Model model){
+    public String allEvent(Model model, HttpSession session){
+        model.addAttribute("mail",session.getAttribute("mail"));
         model.addAttribute("events", eventService.getAllEvents());
         return "/event/all";
     }

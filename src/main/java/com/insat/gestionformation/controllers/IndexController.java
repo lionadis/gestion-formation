@@ -7,13 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class IndexController {
 
     @Autowired
     EventService eventService;
     @RequestMapping("/")
-    public String index(Model model, User user){
+    public String index(Model model, User user, HttpSession session){
+        model.addAttribute("mail", session.getAttribute("mail"));
+        model.addAttribute("connected",session.getAttribute("connected"));
+        model.addAttribute("name", session.getAttribute("name"));
         model.addAttribute("events", eventService.getAllEvents());
         return "index";
     }
