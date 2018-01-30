@@ -1,10 +1,15 @@
 package com.insat.gestionformation.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static javax.persistence.TemporalType.DATE;
+import static javax.persistence.TemporalType.TIME;
 
 @Entity
 @Table(name = "EVENT")
@@ -18,8 +23,10 @@ public class Event {
     private String name;
     private String description;
     private int capacity;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    private Time time;
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date time;
 
     @ManyToOne
     @JoinColumn(name="host")
@@ -48,11 +55,11 @@ public class Event {
     }
 
     @Column(name = "TIME")
-    public Time getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 

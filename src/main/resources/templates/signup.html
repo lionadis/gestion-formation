@@ -3,30 +3,60 @@
 <head lang="en">
     <title>Index</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
-<body>
-<form action="#" th:action="@{/signup}" th:object="${user}" method="post">
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td><input type="text" th:field="*{name}"></input></td>
-        </tr>
-        <tr>
-            <td>Family Name:</td>
-            <td><input type="text" th:field="*{familyName}"></input></td>
-        </tr>
-        <tr>
-            <td>Mail</td>
-            <td><input type="text" th:field="*{mail}"></input></td>
-        </tr>
-        <tr>
-            <td>Password</td>
-            <td><input type="password" th:field="*{passwd}"></input></td>
-        </tr>
-        <tr>
-            <button type="submit">Submit</button></tr>
-    </table>
-</form>
+    <style>
+        body{
+            background-size: cover;
+        }
+        form{
+            margin-top: 120px;
+            padding: 40px;
+            padding-top: 50px;
+            width: 30%;
+            -webkit-box-shadow: 1px 1px 15px 6px rgba(0,0,0,0.75);
+            -moz-box-shadow: 1px 1px 15px 6px rgba(0,0,0,0.75);
+            box-shadow: 1px 1px 15px 6px rgba(0,0,0,0.75);
+
+        }
+        input{
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body th:background="@{/bg1.jpg}">
+<center>
+    <form action="#" th:action="@{/signup}" th:object="${user}" method="post">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Name" class="form-control"
+                       th:field="*{name}"/>
+            </div>
+            <div class="form-group">
+                <input type="text" id="fname" placeholder="Family Name" class="form-control"
+                       th:field="*{familyName}"/>
+            </div>
+
+        <div class="form-group">
+                <input type="email" id="email" placeholder="email" class="form-control"
+                       th:field="*{mail}"/>
+            </div>
+            <div class="form-group">
+                <input type="password" id="pwd" placeholder="password" class="form-control"
+                       th:field="*{passwd}"/>
+            </div>
+            <button class="btn btn-default" type="submit">Sign up</button>
+    </form>
+</center>
+<script
+        src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>
