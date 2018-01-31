@@ -141,7 +141,7 @@
                 <td th:case="${true}"><a class="btn btn-success" th:href="@{/event/details/__${event.id}__}">
                     <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
                 </td>
-                <td th:case="*"><a class="btn btn-danger">
+                <td th:case="*"><a class="btn btn-danger" th:href="@{/event/details/__${event.id}__}">
                     <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
                 </td>
             </div>
