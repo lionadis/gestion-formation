@@ -122,6 +122,7 @@
             <th>Name</th>
             <th>Capacity</th>
             <th>Description</th>
+            <th>Host</th>
             <th>Date</th>
             <th>Time</th>
             <th>Actions</th>
@@ -133,10 +134,18 @@
             <td th:text="${event.name}"></td>
             <td th:text="${event.capacity}"></td>
             <td th:text="${event.description}"></td>
+            <td th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:''"></td>
             <td th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:''"></td>
             <td th:text="${event.time}?${#dates.format(event.time,'hh:mm aa')}:''"></td>
-            <td><a class="btn btn-success">
-                <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a></td>
+            <div th:switch="${connected}">
+                <td th:case="${true}"><a class="btn btn-success">
+                    <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
+                </td>
+                <td th:case="*"><a class="btn btn-danger">
+                    <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
+                </td>
+            </div>
+
             <!--<td><a href="#" th:href="@{delete/__${event.id}__}">delete</a></td>-->
         </tr>
         </tbody>
