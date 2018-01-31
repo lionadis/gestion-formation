@@ -3,6 +3,23 @@
 <head lang="en">
     <title>Index</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <style>
+        .hidden-xs {
+            display: inline-block;
+        }
+
+        body {
+            background-size: cover;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <!--@thymesVar id="event" type="com.insat.gestionformation.models.Event"-->
@@ -11,41 +28,106 @@
 <!--@thymesVar id="description" type="String"-->
 <!--*/-->
 <body>
-<h3>Details of the event: </h3>
-<h3 th:text = "${event.name}"></h3>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Capacity</th>
-        <th>Description</th>
-    </tr>
-    <!--/*@thymesVar id="events" type="List<Event>"*/-->
-    <tr>
-        <a href="#"><td th:text = "${event.name}"></td></a>
-        <td th:text = "${event.capacity}"> </td>
-        <td th:text = "${event.description}"> </td>
-        <td><a href="/event/all" th:href="@{../delete/__${event.id}__}">delete</a></td>
-    </tr>
-</table>
-<h3>All paticipants:</h3>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Family Name</th>
-        <th>Mail</th>
-    </tr>
-    <!--/*@thymesVar id="events" type="List<Event>"*/-->
-    <tr th:each="user : ${event.getParticipants()}" >
-        <td th:text = "${user.name}"></td>
-        <td th:text = "${user.familyName}"> </td>
-        <td th:text = "${user.mail}"> </td>
-    </tr>
-</table>
-<a href="/event/all"> back</a>
-<form action="#" th:action="@{/event/details/__${event.id}__}" method="post">
-    <table>
-            <button type="submit">Register now!</button>
-    </table>
-</form>
+<nav class="navbar navbar-default navbar-fixed">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Gestion Formation</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">
+                        <div class="glyphicon glyphicon-user" style="display: inline-block"></div> &nbsp;
+                        <div th:switch="${connected}" style="display: inline-block">
+                            <div th:case="${true}">
+                                <div th:text="${usr.getName()+' '+usr.getFamilyName()}"></div>
+                            </div>
+                            <div th:case="*">Sign in</div>
+                        </div>
+                        <span class="caret"></span></a>
+                    <div class="dropdown-menu" style="width: 300px; padding: 20px;">
+                        <div th:switch="${connected}">
+                            <div th:case="${true}">
+                                <div>
+                                    <h5 th:text="${usr.getMail()}"></h5>
+                                    <hr/>
+                                    <a href="/disconnect">
+                                        <div class="glyphicon glyphicon-log-out"></div>
+                                        Disconnect</a>
+
+                                </div>
+                            </div>
+                            <div th:case="*">
+                                <form action="#" th:action="@{/signin}" th:object="${user}" method="post">
+                                    <div class="form-group">
+                                        <input type="email" id="email" placeholder="email" class="form-control"
+                                               th:field="*{mail}"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="pwd" placeholder="password" class="form-control"
+                                               th:field="*{passwd}"/>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox"/> Remember me</label>
+                                    </div>
+                                    <button class="btn btn-default" type="submit" href="/sginin">Sign in</button>
+                                </form>
+                                <hr/>
+                                <a href="/signup">Don't have an Account? Sign up!</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
+    <h1 th:text="${event.name}"></h1>
+    <h2 th:text="${event.description}"></h2>
+    <h3>Hosted By:
+        <div style="display: inline-block" th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:'Unknown'"></div>
+    </h3>
+    <h3>Mail of the Host:
+        <div style="display: inline-block" th:text="${event.host}?${event.host.getMail()}:'Unknown'"></div>
+    </h3>
+    <h3>Date:
+        <div style="display: inline-block" th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:'Unknown'"></div>
+    </h3>
+    <h3>Time:
+        <div style="display: inline-block" th:text="${event.time}?${#dates.format(event.date,'hh:mm aa')}:'Unknown'"></div>
+    </h3>
+    <h3>Remaining Places:
+        <div style="display: inline-block" th:text="${event.participants}?${event.capacity - event.participants.size()}:${event.capacity}"></div>/
+        <div style="display: inline-block" th:text="${event.capacity}"></div>
+    </h3>
+    <div th:switch="${connected}">
+        <a class="btn btn-success btn-lg" style="margin-top: 2%" th:case="${true}">
+        <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
+        <button disabled="disabled" class="btn btn-danger btn-lg" style="margin-top: 2%" th:case="*">Sign in to participate</button>
+    </div>
+
+
+
+</div>
+
+<script
+        src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -56,8 +56,11 @@ public class EventController {
     }
 
     @GetMapping(value = "/details/{id}")
-    public String detailsEvent(@PathVariable Long id, Model model) {
+    public String detailsEvent(@PathVariable Long id, Model model,User user, HttpSession session) {
+        model.addAttribute("connected",session.getAttribute("connected"));
+        model.addAttribute("usr",session.getAttribute("user"));
         model.addAttribute("event", eventService.getEvent(id));
+        session.setAttribute("currentPage","/event/details/"+id);
         return "/event/details";
     }
 

@@ -18,9 +18,9 @@ public class IndexController {
     public String index(Model model, User user, HttpSession session){
         model.addAttribute("mail", session.getAttribute("mail"));
         model.addAttribute("connected",session.getAttribute("connected"));
-        model.addAttribute("name", session.getAttribute("name"));
-        model.addAttribute("mail", session.getAttribute("mail"));
+        model.addAttribute("usr", session.getAttribute("user"));
         model.addAttribute("events", eventService.getAllEvents());
+        session.setAttribute("currentPage","/");
         return "index";
     }
 }

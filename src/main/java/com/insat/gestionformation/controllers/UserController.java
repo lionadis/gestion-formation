@@ -38,10 +38,12 @@ public class UserController {
         System.out.println(user.getPasswd()+" "+res.getPasswd());
         if (res!=null && encryptionService.encrypt(user.getPasswd()).equals(res.getPasswd())){
             session.setAttribute("connected", true);
-            session.setAttribute("name", res.getName()+" "+res.getFamilyName());
-            session.setAttribute("mail", res.getMail());
+            session.setAttribute("user", res);
         }
-        return "redirect:/";
+        if (session.getAttribute("currentPage")==null) {
+            return "redirect:/";
+        }
+        return "redirect:"+session.getAttribute("currentPage");
     }
 
     @GetMapping(value = "/disconnect")

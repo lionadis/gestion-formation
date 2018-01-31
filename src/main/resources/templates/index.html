@@ -52,7 +52,7 @@
                         <div class="glyphicon glyphicon-user" style="display: inline-block"></div> &nbsp;
                         <div th:switch="${connected}" style="display: inline-block">
                             <div th:case="${true}">
-                                <div th:text="${name}"></div>
+                                <div th:text="${usr.getName()+' '+usr.getFamilyName()}"></div>
                             </div>
                             <div th:case="*">Sign in</div>
                         </div>
@@ -61,7 +61,7 @@
                         <div th:switch="${connected}">
                             <div th:case="${true}">
                                 <div>
-                                    <h5 th:text="${mail}"></h5>
+                                    <h5 th:text="${usr.getMail()}"></h5>
                                     <hr/>
                                     <a href="/disconnect">
                                         <div class="glyphicon glyphicon-log-out"></div>
@@ -132,13 +132,13 @@
         <tbody>
         <tr th:each="event : ${events}">
             <td th:text="${event.name}"></td>
-            <td th:text="${event.capacity}"></td>
+            <td th:text="${event.capacity - event.participants.size()}+'/'+${event.capacity}"></td>
             <td th:text="${event.description}"></td>
             <td th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:''"></td>
             <td th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:''"></td>
             <td th:text="${event.time}?${#dates.format(event.time,'hh:mm aa')}:''"></td>
             <div th:switch="${connected}">
-                <td th:case="${true}"><a class="btn btn-success">
+                <td th:case="${true}"><a class="btn btn-success" th:href="@{/event/details/__${event.id}__}">
                     <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
                 </td>
                 <td th:case="*"><a class="btn btn-danger">
