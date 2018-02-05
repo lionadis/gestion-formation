@@ -112,9 +112,17 @@
         <div style="display: inline-block" th:text="${event.participants}?${event.capacity - event.participants.size()}:${event.capacity}"></div>/
         <div style="display: inline-block" th:text="${event.capacity}"></div>
     </h3>
-    <div th:switch="${connected}">
-        <a class="btn btn-success btn-lg" style="margin-top: 2%" th:case="${true}">
-        <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</a>
+    <div  th:switch="${connected}">
+        <div th:case="${true}">
+            <div th:switch="${isPart}" >
+                <button th:case="${true}" class="btn btn-info">You are Registered for this event</button>
+                <form  style="margin-top: 2%"  th:action="@{'/event/participate/'+${event.id}}" th:method="get" th:case="*">
+                    <button class="btn btn-success btn-lg"> <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</button>
+                </form>
+            </div>
+        </div>
+
+
         <button disabled="disabled" class="btn btn-danger btn-lg" style="margin-top: 2%" th:case="*">Sign in to participate</button>
     </div>
 

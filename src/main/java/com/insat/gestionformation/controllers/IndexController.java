@@ -2,6 +2,7 @@ package com.insat.gestionformation.controllers;
 
 import com.insat.gestionformation.models.User;
 import com.insat.gestionformation.services.EventService;
+import com.insat.gestionformation.services.ParticipationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,8 @@ public class IndexController {
 
     @Autowired
     EventService eventService;
+    @Autowired
+    ParticipationService participationService;
     @RequestMapping("/")
     public String index(Model model, User user, HttpSession session){
         model.addAttribute("mail", session.getAttribute("mail"));

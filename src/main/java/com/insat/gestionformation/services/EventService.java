@@ -22,7 +22,8 @@ public class EventService{
     }
 
     public Event getEvent(long id){
-        return (Event) eventRepository.findOne(id);
+        Event e=(Event) eventRepository.findOne(id);
+        return e;
     }
 
     public Event addEvent(Event event){

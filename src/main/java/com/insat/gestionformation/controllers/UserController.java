@@ -1,9 +1,11 @@
 package com.insat.gestionformation.controllers;
 
 import com.insat.gestionformation.models.Event;
+import com.insat.gestionformation.models.Participation;
 import com.insat.gestionformation.models.User;
 import com.insat.gestionformation.services.EncryptionService;
 import com.insat.gestionformation.services.EventService;
+import com.insat.gestionformation.services.ParticipationService;
 import com.insat.gestionformation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ public class UserController {
     @Autowired
     UserService userService;
     @Autowired
+    ParticipationService participationService;
+    @Autowired
     EncryptionService encryptionService;
     @GetMapping(value = "/signup")
     public String signUp(User user){
@@ -35,7 +39,7 @@ public class UserController {
     @PostMapping(value = "/signin")
     public String connect(@Valid User user, HttpSession session){
         User res=userService.getUserByMail(user.getMail());
-        System.out.println(user.getPasswd()+" "+res.getPasswd());
+
         if (res!=null && encryptionService.encrypt(user.getPasswd()).equals(res.getPasswd())){
             session.setAttribute("connected", true);
             session.setAttribute("user", res);

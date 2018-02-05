@@ -1,8 +1,11 @@
 package com.insat.gestionformation.controllers;
 
 import com.insat.gestionformation.models.Event;
+import com.insat.gestionformation.models.Participation;
+import com.insat.gestionformation.models.ParticipationId;
 import com.insat.gestionformation.models.User;
 import com.insat.gestionformation.services.EventService;
+import com.insat.gestionformation.services.ParticipationService;
 import com.insat.gestionformation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,11 +26,13 @@ public class EventController {
 
     private final EventService eventService;
     private final UserService userService;
+    private final ParticipationService participationService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService, UserService userService, ParticipationService participationService) {
         this.eventService = eventService;
         this.userService = userService;
+        this.participationService =participationService;
     }
 
     @GetMapping(value = "/add")
@@ -41,9 +46,18 @@ public class EventController {
         return "/event/all";
     }
 
+    @GetMapping(value = "/participate/{id_event}")
+    public String participate(HttpSession session, @PathVariable Long id_event){
+        Event event =eventService.getEvent(id_event);
+        User user=(User)session.getAttribute("user");
+        Participation participation=new Participation(user,event,new ParticipationId(user.getId(),event.getId()));
+        participationService.addParticipation(participation);
+        return "redirect:/event/details/"+id_event;
+
+    }
     @PostMapping(value = "/add")
     public String addNewEvent(@Valid Event event, HttpSession session) {
-        User host = userService.getUserByMail((String) session.getAttribute("mail"));
+        User host = (User)session.getAttribute("user");
         event.setHost(host);
         eventService.addEvent(event);
         return "redirect:/event/all";
@@ -57,26 +71,27 @@ public class EventController {
 
     @GetMapping(value = "/details/{id}")
     public String detailsEvent(@PathVariable Long id, Model model,User user, HttpSession session) {
-        model.addAttribute("connected",session.getAttribute("connected"));
-        model.addAttribute("usr",session.getAttribute("user"));
-        model.addAttribute("event", eventService.getEvent(id));
-        session.setAttribute("currentPage","/event/details/"+id);
-        return "/event/details";
-    }
+        Event event=eventService.getEvent(id);
+        boolean connected=false;
+        if(session.getAttribute("connected")!=null&& (boolean)session.getAttribute("connected")) connected=true;
 
-    @PostMapping(value = "/details/{id}")
-    public String updateEvent(@PathVariable Long id, Model model) {
-        Event event = eventService.getEvent(id);
-        eventService.deleteEvent(id);
-        Set<User> users = event.getParticipants();
-        User user = new User();
-        user.setName("Nadhem");
-        user.setFamilyName("Maaloul");
-        users.add(user);
-        event.setParticipants(users);
-        eventService.addEvent(event);
+        boolean isPart=false;
+        System.out.println(isPart);
+        model.addAttribute("connected",connected);
+        if (connected) {
+            User usr =(User)session.getAttribute("user");
+            model.addAttribute("usr",usr);
+            for (Participation p:event.getParticipants()) {
+                if (p.getParticipationId().getParticipant()==usr.getId() && p.getParticipationId().getParticipated()==event.getId()){
+                    isPart=true;
+                    break;
+                }
+            }
+            if ((event.getHost().equals(userService.getUserByMail(usr.getMail())))) isPart=true;
+        }
         model.addAttribute("event", event);
-        model.addAttribute("participants", users);
+        model.addAttribute("isPart", isPart);
+        session.setAttribute("currentPage","/event/details/"+id);
         return "/event/details";
     }
 

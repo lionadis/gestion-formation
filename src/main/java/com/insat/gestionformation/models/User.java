@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,22 +21,20 @@ public class User {
     private String mail;
     private String passwd;
 
-    @ManyToMany
-    @JoinTable(name="participation",
-            joinColumns={@JoinColumn(name="id_event")},
-            inverseJoinColumns={@JoinColumn(name="id_user")})
-    private Set<Event> participated=new HashSet<Event>();
-
     @OneToMany(mappedBy = "host")
-    private Set<Event> hosted;
+    private List<Event> hosted;
 
-    public Set<Event> getParticipated() {
-        return participated;
+    @OneToMany(mappedBy = "participant")
+    private List<Participation> participations;
+
+    public List<Event> getHosted() {
+        return hosted;
     }
 
-    public void setParticipated(Set<Event> participated) {
-        this.participated = participated;
+    public void setHosted(List<Event> hosted) {
+        this.hosted = hosted;
     }
+
 
     public void setId(long id) {
         this.id = id;

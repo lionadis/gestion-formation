@@ -1,6 +1,7 @@
 package com.insat.gestionformation.services;
 
 import com.insat.gestionformation.models.User;
+import com.insat.gestionformation.repositories.ParticipationRepository;
 import com.insat.gestionformation.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,3 @@ public class UserService {
 
     public User getUserByMail(String mail){return userRepository.getUserByMail(mail);}
 }
-

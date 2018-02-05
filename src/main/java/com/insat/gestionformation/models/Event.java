@@ -4,9 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Time;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.TemporalType.DATE;
 import static javax.persistence.TemporalType.TIME;
@@ -15,10 +13,9 @@ import static javax.persistence.TemporalType.TIME;
 @Table(name = "EVENT")
 public class Event {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false, nullable = false)
+
     private long id;
     private String name;
     private String description;
@@ -32,19 +29,13 @@ public class Event {
     @JoinColumn(name="host")
     private User host;
 
-    public Set<User> getParticipants() {
-        return participants;
-    }
 
-    public void setParticipants(Set<User> participants) {
-        this.participants = participants;
-    }
 
-    @ManyToMany
-    @JoinTable(name="participation",
-        joinColumns={@JoinColumn(name="id_user")},
-        inverseJoinColumns={@JoinColumn(name="id_event")})
-    private Set<User> participants;
+
+
+    @OneToMany(mappedBy = "event")
+    private List<Participation> participants;
+
 
     public User getHost() {
         return host;
@@ -105,5 +96,13 @@ public class Event {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public List<Participation> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Participation> participants) {
+        this.participants = participants;
     }
 }
