@@ -7,6 +7,7 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
     <style>
         .hidden-xs {
             display: inline-block;
@@ -126,7 +127,24 @@
         <button disabled="disabled" class="btn btn-danger btn-lg" style="margin-top: 2%" th:case="*">Sign in to participate</button>
     </div>
 
-
+    <div class="container" th:if="${isHost}">
+        <table id="partsTable" class="table table-bordered" style="background-color: aliceblue">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Family Name</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="part : ${participants}">
+                <td th:text="${part.name}"></td>
+                <td th:text="${part.familyName}"></td>
+                <td th:text="${part.mail}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
@@ -137,5 +155,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#partsTable').DataTable({"paginate": false, "info": false});
+    });
+</script>
 </body>
 </html>

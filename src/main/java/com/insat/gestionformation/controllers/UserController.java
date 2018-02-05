@@ -33,7 +33,7 @@ public class UserController {
     public String addNewUser(@Valid User user){
         user.setPasswd(encryptionService.encrypt(user.getPasswd()));
         userService.addUser(user);
-        return "redirect:/event/all";
+        return "redirect:/";
     }
 
     @PostMapping(value = "/signin")

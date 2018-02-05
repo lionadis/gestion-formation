@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -38,12 +40,6 @@ public class EventController {
     @GetMapping(value = "/add")
     public String addEvent(Event event) {
         return "/event/add";
-    }
-
-    @GetMapping(value = "/all")
-    public String allEvent(Model model, HttpSession session) {
-        model.addAttribute("events", eventService.getAllEvents());
-        return "/event/all";
     }
 
     @GetMapping(value = "/participate/{id_event}")
@@ -76,7 +72,7 @@ public class EventController {
         if(session.getAttribute("connected")!=null&& (boolean)session.getAttribute("connected")) connected=true;
 
         boolean isPart=false;
-        System.out.println(isPart);
+        boolean isHost=false;
         model.addAttribute("connected",connected);
         if (connected) {
             User usr =(User)session.getAttribute("user");
@@ -87,7 +83,17 @@ public class EventController {
                     break;
                 }
             }
-            if ((event.getHost().equals(userService.getUserByMail(usr.getMail())))) isPart=true;
+            if ((event.getHost().equals(userService.getUserByMail(usr.getMail())))) {
+                isPart=true;
+                isHost=true;
+                ArrayList<User> participants=new ArrayList<User>();
+                for (Participation p:event.getParticipants()){
+                    participants.add(p.getParticipant());
+                }
+                model.addAttribute("participants",participants);
+                model.addAttribute("isHost",isHost);
+            }
+
         }
         model.addAttribute("event", event);
         model.addAttribute("isPart", isPart);
