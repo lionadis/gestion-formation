@@ -98,33 +98,44 @@
     <h1 th:text="${event.name}"></h1>
     <h2 th:text="${event.description}"></h2>
     <h3>Hosted By:
-        <div style="display: inline-block" th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:'Unknown'"></div>
+        <div style="display: inline-block"
+             th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:'Unknown'"></div>
     </h3>
     <h3>Mail of the Host:
         <div style="display: inline-block" th:text="${event.host}?${event.host.getMail()}:'Unknown'"></div>
     </h3>
     <h3>Date:
-        <div style="display: inline-block" th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:'Unknown'"></div>
+        <div style="display: inline-block"
+             th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:'Unknown'"></div>
     </h3>
     <h3>Time:
-        <div style="display: inline-block" th:text="${event.time}?${#dates.format(event.date,'hh:mm aa')}:'Unknown'"></div>
+        <div style="display: inline-block"
+             th:text="${event.time}?${#dates.format(event.date,'hh:mm aa')}:'Unknown'"></div>
     </h3>
     <h3>Remaining Places:
-        <div style="display: inline-block" th:text="${event.participants}?${event.capacity - event.participants.size()}:${event.capacity}"></div>/
+        <div style="display: inline-block"
+             th:text="${event.participants}?${event.capacity - event.participants.size()}:${event.capacity}"></div>
+        /
         <div style="display: inline-block" th:text="${event.capacity}"></div>
     </h3>
-    <div  th:switch="${connected}">
+    <div th:switch="${connected}">
         <div th:case="${true}">
-            <div th:switch="${isPart}" >
+            <div th:switch="${isPart}">
                 <button th:case="${true}" class="btn btn-info">You are Registered for this event</button>
-                <form  style="margin-top: 2%"  th:action="@{'/event/participate/'+${event.id}}" th:method="get" th:case="*">
-                    <button class="btn btn-success btn-lg"> <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate</button>
+                <form style="margin-top: 2%" th:action="@{'/event/participate/'+${event.id}}" th:method="get"
+                      th:case="*">
+                    <button class="btn btn-success btn-lg">
+                        <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate
+                    </button>
                 </form>
+                <a th:if="${isHost}" class="btn btn-danger" data-toggle="modal" data-target="#delModal">Delete Event</a>
             </div>
         </div>
 
 
-        <button disabled="disabled" class="btn btn-danger btn-lg" style="margin-top: 2%" th:case="*">Sign in to participate</button>
+        <button disabled="disabled" class="btn btn-danger btn-lg" style="margin-top: 2%" th:case="*">Sign in to
+            participate
+        </button>
     </div>
 
     <div class="container" th:if="${isHost}">
@@ -146,6 +157,28 @@
         </table>
     </div>
 
+</div>
+<div id="delModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Deleting Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are You sure You want to delete this event?</p>
+            </div>
+            <div class="modal-footer">
+                <form action="#" th:action="@{/event/delete/__${event.id}__}" th:object="${event}" method="post" style="display: inline-block">
+                    <button type="submit" class="btn btn-default">Yes</button>
+                </form>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <script

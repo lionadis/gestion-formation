@@ -56,13 +56,13 @@ public class EventController {
         User host = (User)session.getAttribute("user");
         event.setHost(host);
         eventService.addEvent(event);
-        return "redirect:/event/all";
+        return "redirect:/";
     }
 
-    @GetMapping(value = "/delete/{id}")
+    @PostMapping(value = "/delete/{id}")
     public String deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
-        return "redirect:/event/all";
+        return "redirect:/";
     }
 
     @GetMapping(value = "/details/{id}")

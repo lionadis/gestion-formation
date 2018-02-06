@@ -39,7 +39,6 @@ public class UserController {
     @PostMapping(value = "/signin")
     public String connect(@Valid User user, HttpSession session){
         User res=userService.getUserByMail(user.getMail());
-
         if (res!=null && encryptionService.encrypt(user.getPasswd()).equals(res.getPasswd())){
             session.setAttribute("connected", true);
             session.setAttribute("user", res);
