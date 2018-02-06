@@ -33,23 +33,26 @@
     <form action="#" th:action="@{/signup}" th:object="${user}" method="post">
             <div class="form-group">
                 <input type="text" id="name" placeholder="Name" class="form-control"
-                       th:field="*{name}"/>
+                       th:field="*{name}" required="required"/>
             </div>
             <div class="form-group">
                 <input type="text" id="fname" placeholder="Family Name" class="form-control"
-                       th:field="*{familyName}"/>
+                       th:field="*{familyName}" required="required"/>
             </div>
 
         <div class="form-group">
                 <input type="email" id="email" placeholder="email" class="form-control"
-                       th:field="*{mail}"/>
+                       th:field="*{mail}" required="required"/>
             </div>
             <div class="form-group">
                 <input type="password" id="pwd" placeholder="password" class="form-control"
-                       th:field="*{passwd}"/>
+                       th:field="*{passwd}" required="required"/>
             </div>
             <button class="btn btn-default" type="submit">Sign up</button>
     </form>
+    <div class="alert alert-danger" th:if="${usedMail}" id="toHide" style="width:20%; position:absolute; bottom: 20px; right: 20px;">
+        <strong>The e-mail address you entered is already used</strong>
+    </div>
 </center>
 <script
         src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -58,5 +61,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+<script>
+    setTimeout(function () {document.getElementById('toHide').style.display='none'}, 3000);
+</script>
 </body>
 </html>

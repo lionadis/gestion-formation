@@ -12,6 +12,15 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {
+    private static boolean error=false;
+
+    public static boolean getError() {
+        return error;
+    }
+
+    public static void setError(boolean Error) {
+        error = Error;
+    }
 
     @Autowired
     EventService eventService;
@@ -23,6 +32,8 @@ public class IndexController {
         model.addAttribute("usr", session.getAttribute("user"));
         model.addAttribute("events", eventService.getAllEvents());
         session.setAttribute("currentPage","/");
+        model.addAttribute("error",error);
+        error=false;
         return "index";
     }
 }

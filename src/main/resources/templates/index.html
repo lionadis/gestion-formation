@@ -74,11 +74,11 @@
                                 <form action="#" th:action="@{/signin}" th:object="${user}" method="post">
                                     <div class="form-group">
                                         <input type="email" id="email" placeholder="email" class="form-control"
-                                               th:field="*{mail}"/>
+                                               th:field="*{mail}" required="required"/>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" id="pwd" placeholder="password" class="form-control"
-                                               th:field="*{passwd}"/>
+                                               th:field="*{passwd}" required="required"/>
                                     </div>
                                     <button class="btn btn-default" type="submit" href="/sginin">Sign in</button>
                                 </form>
@@ -150,6 +150,9 @@
     </table>
 </div>
 
+<div class="alert alert-danger" th:if="${error}" id="toHide" style="width:20%; position:absolute; bottom: 20px; right: 20px;">
+    <strong>Failed to authentify! Please verify your Credentials </strong>
+</div>
 
 <script
         src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -165,6 +168,9 @@
     $(document).ready(function () {
         $('#eventsTable').DataTable();
     });
+</script>
+<script>
+    setTimeout(function () {document.getElementById('toHide').style.display='none'}, 3000);
 </script>
 </body>
 </html>

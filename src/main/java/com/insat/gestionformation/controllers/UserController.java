@@ -7,6 +7,7 @@ import com.insat.gestionformation.services.EncryptionService;
 import com.insat.gestionformation.services.EventService;
 import com.insat.gestionformation.services.ParticipationService;
 import com.insat.gestionformation.services.UserService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 
 @Controller
 public class UserController {
-
+    boolean usedMail=false;
     @Autowired
     UserService userService;
     @Autowired
@@ -30,15 +31,25 @@ public class UserController {
     @Autowired
     EncryptionService encryptionService;
     @GetMapping(value = "/signup")
-    public String signUp(User user){
+    public String signUp(User user, Model model){
+        model.addAttribute("usedMail",usedMail);
         return "signup";
     }
     @PostMapping(value = "/signup")
     public String addNewUser(@Valid User user){
-        user.setPasswd(encryptionService.encrypt(user.getPasswd()));
-        user.setAdmin(false);
-        userService.addUser(user);
-        return "redirect:/";
+        User user1=userService.getUserByMail(user.getMail());
+        if(user1==null){
+            usedMail=false;
+            user.setPasswd(encryptionService.encrypt(user.getPasswd()));
+            user.setAdmin(false);
+            userService.addUser(user);
+            return "redirect:/";
+        }else{
+            usedMail=true;
+            return "redirect:/signup";
+        }
+
+
     }
 
     @PostMapping(value = "/signin")
@@ -47,7 +58,7 @@ public class UserController {
         if (res!=null && encryptionService.encrypt(user.getPasswd()).equals(res.getPasswd())){
             session.setAttribute("connected", true);
             session.setAttribute("user", res);
-        }
+        }else IndexController.setError(true);
         if (session.getAttribute("currentPage")==null) {
             return "redirect:/";
         }

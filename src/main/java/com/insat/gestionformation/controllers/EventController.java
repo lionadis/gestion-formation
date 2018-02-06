@@ -104,14 +104,26 @@ public class EventController {
                     participants.add(p.getParticipant());
                 }
                 model.addAttribute("participants",participants);
-                model.addAttribute("isHost",isHost);
             }
 
         }
+        model.addAttribute("isHost",isHost);
         model.addAttribute("event", event);
         model.addAttribute("isPart", isPart);
         session.setAttribute("currentPage","/event/details/"+id);
+        model.addAttribute("error",IndexController.getError());
+        IndexController.setError(false);
         return "/event/details";
+    }
+
+    @GetMapping(value = "/unsub/{id}")
+    public String unsubscribe(@PathVariable Long id,HttpSession session){
+        User user= (User) session.getAttribute("user");
+        if (user!=null){
+            participationService.deleteParticipation(new ParticipationId(user.getId(),id));
+        }
+        System.out.println("aaaaaaaa");
+        return "redirect:/";
     }
 
 }
