@@ -60,9 +60,22 @@ public class EventController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    public String deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
+    public String deleteEvent(@PathVariable Long id, HttpSession session) {
+        User user=(User) session.getAttribute("user");
+        Event event= eventService.getEvent(id);
+        if (user!=null && event!=null &&event.getHost().getId()==user.getId()){
+            eventService.deleteEvent(id);
+        }
+
         return "redirect:/";
+    }
+    @PostMapping(value = "/deleteAdmin/{id}")
+    public String deleteEventAdmin(@PathVariable Long id, HttpSession session) {
+        User user =(User) session.getAttribute("user");
+        if (user!=null && user.isAdmin()) {
+            eventService.deleteEvent(id);
+        }
+        return "redirect:/administration";
     }
 
     @GetMapping(value = "/details/{id}")

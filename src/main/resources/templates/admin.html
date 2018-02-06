@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administration Panel</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+    <style>
+        .hidden-xs {
+            display: inline-block;
+        }
+
+        body {
+            background-size: cover;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container" th:if="${!admin}">
+    <center>
+        <h1 style="margin-top: 25%">You are not admin, You can't access this page!</h1>
+    </center>
+</div>
+<div class="container" th:if="${admin}">
+    <div class="container">
+        <h1>All Events:</h1>
+        <table class="table table-striped" id="eventsTable">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Capacity</th>
+                <th>Description</th>
+                <th>Host</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <!--/*@thymesVar id="events" type="List<Event>"*/-->
+            <tbody>
+            <tr th:each="event : ${events}">
+                <td th:text="${event.name}"></td>
+                <td th:text="${event.capacity - event.getParticipants().size() }+'/'+${event.capacity}"></td>
+                <td th:text="${event.description}"></td>
+                <td th:text="${event.host}?${event.host.getName()+' '+event.host.getFamilyName()}:''"></td>
+                <td th:text="${event.date}?${#dates.format(event.date,'dd/MM/yyyy')}:''"></td>
+                <td th:text="${event.time}?${#dates.format(event.time,'hh:mm aa')}:''"></td>
+                <td>
+                    <form action="#" th:action="@{/event/deleteAdmin/__${event.id}__}" method="post" style="display: inline-block">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+
+
+            </tr>
+            </tbody>
+        </table>
+        <h1>All Users:</h1>
+            <table class="table table-striped" id="usersTable">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>FamilyName</th>
+                    <th>Mail</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <!--/*@thymesVar id="events" type="List<Event>"*/-->
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.familyName}"></td>
+                    <td th:text="${user.mail}"></td>
+                    <td>
+                        <form action="#" th:action="@{/user/deleteAdmin/__${user.id}__}" method="post" style="display: inline-block">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+</div>
+
+
+
+
+
+<script
+        src="http://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#eventsTable').DataTable();
+        $('#usersTable').DataTable();
+    });
+</script>
+</body>
+</html>

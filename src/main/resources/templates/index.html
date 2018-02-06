@@ -62,6 +62,7 @@
                             <div th:case="${true}">
                                 <div>
                                     <h5 th:text="${usr.getMail()}"></h5>
+                                    <h5 th:if="${usr.isAdmin()}"><a href="/administration">Administration Panel</a> </h5>
                                     <hr/>
                                     <a href="/disconnect">
                                         <div class="glyphicon glyphicon-log-out"></div>
@@ -162,7 +163,7 @@
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#eventsTable').DataTable({"paginate": false, "info": false});
+        $('#eventsTable').DataTable();
     });
 </script>
 </body>

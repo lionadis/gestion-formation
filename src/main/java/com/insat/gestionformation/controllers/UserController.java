@@ -9,7 +9,9 @@ import com.insat.gestionformation.services.ParticipationService;
 import com.insat.gestionformation.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,6 +26,8 @@ public class UserController {
     @Autowired
     ParticipationService participationService;
     @Autowired
+    EventService eventService;
+    @Autowired
     EncryptionService encryptionService;
     @GetMapping(value = "/signup")
     public String signUp(User user){
@@ -32,6 +36,7 @@ public class UserController {
     @PostMapping(value = "/signup")
     public String addNewUser(@Valid User user){
         user.setPasswd(encryptionService.encrypt(user.getPasswd()));
+        user.setAdmin(false);
         userService.addUser(user);
         return "redirect:/";
     }
@@ -53,5 +58,25 @@ public class UserController {
     public String signout(HttpSession session){
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping (value="administration")
+    public String adminPanel(HttpSession session, Model model){
+        User user=(User)session.getAttribute("user");
+        boolean admin=false;
+        if (user!=null && user.isAdmin()) admin=true;
+        model.addAttribute("admin",admin);
+        model.addAttribute("events", eventService.getAllEvents());
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin";
+    }
+
+    @PostMapping(value = "/user/deleteAdmin/{id}")
+    public String deleteEventAdmin(@PathVariable Long id, HttpSession session) {
+        User user =(User) session.getAttribute("user");
+        if (user!=null && user.isAdmin()){
+            userService.deleteUser(id);
+        }
+        return "redirect:/administration";
     }
 }

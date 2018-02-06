@@ -19,7 +19,6 @@ public class IndexController {
     ParticipationService participationService;
     @RequestMapping("/")
     public String index(Model model, User user, HttpSession session){
-        model.addAttribute("mail", session.getAttribute("mail"));
         model.addAttribute("connected",session.getAttribute("connected"));
         model.addAttribute("usr", session.getAttribute("user"));
         model.addAttribute("events", eventService.getAllEvents());

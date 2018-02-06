@@ -20,6 +20,7 @@ public class User {
     private String familyName;
     private String mail;
     private String passwd;
+    private boolean isAdmin;
 
     @OneToMany(mappedBy = "host")
     private List<Event> hosted;
@@ -79,4 +80,19 @@ public class User {
         this.passwd = passwd;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public List<Participation> getParticipations() {
+        return participations;
+    }
+
+    public void setParticipations(List<Participation> participations) {
+        this.participations = participations;
+    }
 }
