@@ -38,8 +38,9 @@ public class EventController {
     }
 
     @GetMapping(value = "/add")
-    public String addEvent(Event event) {
-        return "/event/add";
+    public String addEvent(Event event, HttpSession session) {
+        if (session.getAttribute("connected")!=null) return "/event/add";
+        else return "redirect:/";
     }
 
     @GetMapping(value = "/participate/{id_event}")
@@ -122,7 +123,6 @@ public class EventController {
         if (user!=null){
             participationService.deleteParticipation(new ParticipationId(user.getId(),id));
         }
-        System.out.println("aaaaaaaa");
         return "redirect:/";
     }
 

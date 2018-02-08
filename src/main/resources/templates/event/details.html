@@ -118,8 +118,8 @@
     <div th:switch="${connected}">
         <div th:case="${true}">
             <div th:switch="${isPart}">
-                <div th:case="${true}">
-                    <button  class="btn btn-info">You are Registered for this event</button>
+                <div th:case="${true}" style="display: inline-block">
+                    <button  class="btn btn-info" >You are Registered for this event</button>
                     <form style="margin-top: 2%;display: inline-block" th:action="@{'/event/unsub/'+${event.id}}" th:method="get" th:if="${!isHost}" >
                         <button class="btn btn-danger" type="submit">
                             Unsubscribe
@@ -129,11 +129,14 @@
 
                 <form style="margin-top: 2%" th:action="@{'/event/participate/'+${event.id}}" th:method="get"
                       th:case="*">
-                    <button class="btn btn-success btn-lg">
+                    <button class="btn btn-success btn-lg" th:if="${event.capacity &gt; event.participants.size()}">
                         <div class="glyphicon glyphicon-ok"></div> &nbsp;Participate
                     </button>
+                    <button class="btn btn-danger btn-lg" th:if="${event.capacity  &lt; event.participants.size() ||event.capacity  == event.participants.size() }" disabled="disabled">
+                        <div class="glyphicon glyphicon-ok"></div> &nbsp;Event is already full!
+                    </button>
                 </form>
-                <a th:if="${isHost}" class="btn btn-danger" data-toggle="modal" data-target="#delModal">Delete Event</a>
+                <a th:if="${isHost}" class="btn btn-danger" data-toggle="modal" data-target="#delModal" style="display: inline-block">Delete Event</a>
             </div>
         </div>
 

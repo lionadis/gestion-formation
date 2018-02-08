@@ -31,7 +31,7 @@ public class UserController {
     @Autowired
     EncryptionService encryptionService;
     @GetMapping(value = "/signup")
-    public String signUp(User user, Model model){
+    public String signUp(User user, Model model, HttpSession session){
         model.addAttribute("usedMail",usedMail);
         return "signup";
     }

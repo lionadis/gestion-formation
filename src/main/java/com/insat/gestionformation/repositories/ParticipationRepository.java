@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface ParticipationRepository extends CrudRepository<Participation, ParticipationId> {
     List<Participation> getParticipationsByEvent(Event event);
+    List<Participation> getParticipationsByParticipant(User user);
 
 
 }
